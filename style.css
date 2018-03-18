@@ -37,7 +37,7 @@ body{
     font-size: 6em;
     text-align: center;
 
-    background-image: url('./images/stem.png');
+    background-image: url('https://s3.amazonaws.com/codecampkordiak/images/stem.png');
     background-repeat: no-repeat;
     background-position: center; 
     background-size: 2em;
