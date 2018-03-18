@@ -1,67 +1,147 @@
-function runner(){
+let breakControl = new controlButton(5, '#breakTimeSet');
+let workControl = new controlButton(25, '#workTimeSet');
+let timerToggle = false;
+let currentTimer;
+let timer;
+let sound = new Audio('https://s3.amazonaws.com/codecampkordiak/sounds/Music_Box.mp3');
+let started = false;
 
-    //need to define a time, say 5 minutes
-    //then need to set current time
-    //set future time
-    //calc now - then to get remaining time.
+function startTimer(){
 
+    if(timerToggle){
+        //break time
+        
+        currentTimer = breakControl.value();
+        timerToggle = false;
+    } else {
+        //work time
+        currentTimer = workControl.value();
+        timerToggle = true;
+    }
     //milliseconds to seconds .001/1
-    let milli = 1000;
-    let seconds = 60;
-    let minutes = .25;
 
-    let milliTimer = milli * seconds * minutes;
+    //switch for skipping, moving to next break or work cycle.
+    if(timer){
 
+        clearInterval(timer); //Set interval is asynchronus, need to clear old interval before restart.
     
-    let timeNow = new Date(Date.now());
+    }
 
-    let timerAlarm = new Date(timeNow.getTime() + milliTimer);
+    const milli = 1000;
+    const seconds = 60;
 
-    let timer = setInterval(()=>{
+    let milliSeconds = milli * seconds * currentTimer;
+
+    let startTimeNow = new Date(Date.now());
+
+    let timerAlarm = new Date(startTimeNow.getTime() + milliSeconds);
+
+    timer = setInterval(()=>{
+        
+        //now
         let timeNow = new Date(Date.now());
-
+        
+        //future - now = mili left
         let timeLeft = new Date(timerAlarm.getTime() - timeNow);
         
-        if(timeLeft <=10){
-            clearInterval(timer);
+        if(timeLeft <=1000){
+            
             console.log('done');
+            sound.play();
+            startTimer();
         }
 
-        console.log(timeLeft.getMinutes(), ':', timeLeft.getSeconds());
-        $('#timer').text(timeLeft);
+        let timeClock = timeLeft.getMinutes() + ':' + timeLeft.getSeconds();
+        $('#countDownTimer').text(timeClock);
     
-    }, 1000);
+    }, 250);
 }
 
 $("document").ready(function(){
 
-     
+    $("#workTimeSet").text(workControl.value());
+    $("#breakTimeSet").text(breakControl.value());
+    $("#countDownTimer").text(workControl.formattedValue());
 
-    //runner();
+     $("#btnWorkTimeUp").click(()=>{
+         workControl.increment();
+         if(!started){
+            $("#countDownTimer").text(workControl.formattedValue());
+         }
+     } );
+
+     $("#btnWorkTimeDown").click(()=>{
+        workControl.decrement();
+        if(!started){
+            $("#countDownTimer").text(workControl.formattedValue());
+        }
+    } );
+
+    $("#btnBreakTimeUp").click(()=>{
+        breakControl.increment();
+    } );
+
+    $("#btnBreakTimeDown").click(()=>{
+       breakControl.decrement();
+   } );
+
+    $("#btnStart").click(()=>{
+        if(started){
+            timerToggle = false;
+            started = false;
+            clearInterval(timer);
+            timer = null;
+            $("#countDownTimer").text(workControl.formattedValue());
+            $("#btnStart").text('Start');
+
+        } else {
+            startTimer();
+            $("#btnStart").text('Reset');
+            started = true;
+        }
+        
+    } );
+
+    $("btnPause").click(()=>{
+
+    });
+
+    $("#btnSkip").click(()=>{
+        if(started){
+            startTimer();
+            sound.play();
+        }
+    } );
 
 }); 
 
 
-
-function controlButton(defaultValue){
+function controlButton(defaultValue, controlDisplayId){
 
     let val = defaultValue;
 
     this.increment = ()=>{
+        if(!timer){
         val++;
+        $(controlDisplayId).text(val);
+        }
     }
 
     this.decrement = ()=>{
-        val--;
+        if(!timer){
+        if(val<=1){
+            val = 1;
+        } else { val--;}
+        $(controlDisplayId).text(val);
+    }
     }
 
     this.value = ()=>{
         return val;
     }
 
-}
+    this.formattedValue = ()=>{
+        return val + ":00";
+    }
 
-let minSetter = new controlButton(5);
-minSetter.increment();
-minSetter.increment();
-console.log(minSetter.value());
+}

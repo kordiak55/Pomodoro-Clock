@@ -1,24 +1,69 @@
 <html>
     <head>
-
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet"> 
     </head>
     <body>
-        Pomodoro Clock
-        <div id="timer">TIME</div>
-        <div id="workTimeSetContainer">
-        <button id="btnWorkTimeUp" class="btnTimeChanger">
-            UP
-        </button>
-        <div id=workTimeSet>
-            Current Work Time
+        <div id="pageContainer">
+            <div id="clockContainer">
+            
+            <div id="title">
+            Pomodoro Clock
+            </div>
+                
+                <div id="workTimeSetContainer" class="clockSetContainer">
+
+                    <div class="setterTitle">Work Time</div>
+                    <button id="btnWorkTimeUp" class="btnTimeChanger">
+                            <i class="fas fa-sort-up fa-3x" data-fa-transform="down-2.5"></i>
+                    </button>
+                    <div id="workTimeSet" class="counterContainer">
+                        Current Work Time
+                    </div>
+                    <button id="btnWorkTimeDown" class="btnTimeChanger">
+                            <i class="fas fa-sort-down fa-3x" data-fa-transform="up-4.5"></i>
+                    </button>
+                
+                </div>
+
+                <div id="countDownTimer">TIMES</div>
+
+                <div id="breakTimeSetContainer" class="clockSetContainer">
+
+                    <div class="setterTitle">Break Time</div>
+                    
+                    <button id="btnBreakTimeUp" class="btnTimeChanger">
+                        <i class="fas fa-sort-up fa-3x" data-fa-transform="down-2.5"></i>
+                    </button>
+
+                    <div id="breakTimeSet" class="counterContainer">
+                        Current Break Time
+                    </div>
+                    
+                    <button id="btnBreakTimeDown" class="btnTimeChanger">
+                            <i class="fas fa-sort-down fa-3x" data-fa-transform="up-4.5"></i>
+                    </button>
+
+                </div>
+
+                <div id="btnStartDiv">
+                    <button id="btnStart" class="btnControl">
+                        Start
+                    </button>
+                </div>
+            
+
+                <div id="btnSkipDiv">
+                    <button id="btnSkip" class="btnControl">
+                        Skip
+                    </button>
+                </div>
+
+            </div>
         </div>
-        <button id="btnWorkTimeDown" class="btnTimeChanger">
-            DOWN
-        </button>
-    </div>
-        <button id="btnStart">
-            Start
-        </button>
+
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
